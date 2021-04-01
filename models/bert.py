@@ -31,9 +31,9 @@ class Bert4MRC(BasicModule):
     def __init__(self):
 
         super(Bert4MRC, self).__init__()
-        self.tokenizer = BertTokenizer.from_pretrained('/home/stl/PTM/base/vocab.txt')
-        config = BertConfig.from_pretrained('/home/stl/PTM/base/config.json')
-        self.bert = BertModel.from_pretrained(config=config, pretrained_model_name_or_path='/home/stl/PTM/base/pytorch_model.bin')
+        self.tokenizer = BertTokenizer.from_pretrained('/data1/stl/PTM/base/vocab.txt')
+        config = BertConfig.from_pretrained('/data1/stl/PTM/base/config.json')
+        self.bert = BertModel.from_pretrained(config=config, pretrained_model_name_or_path='/data1/stl/PTM/base/pytorch_model.bin')
         self.dense = t.nn.Linear(768, 2)
 
     def forward(self, input):

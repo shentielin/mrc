@@ -2,16 +2,25 @@ import json
 from torch.utils import data as Data
 
 class MRC(Data.Dataset):
-    def __init__(self, sign='train'):
+    def __init__(self, sign='train_a'):
         self.sign = sign
-        if self.sign == 'train':
-            data = json.load(open('data/train_sent.json'))
-            label = json.load(open('data/train_label.json'))
-        elif self.sign == 'dev':
-            data = json.load(open('data/valid_sent.json'))
+        if self.sign == 'train_a':
+            data = json.load(open('data/data_a/train_sent.json'))
+            label = json.load(open('data/data_a/train_label.json'))
+        elif self.sign == 'dev_a':
+            data = json.load(open('data/data_a/valid_sent.json'))
             label = [1] * len(data)
-        else:
-            data = json.load(open('data/test_sent.json'))
+        elif self.sign == 'test_a':
+            data = json.load(open('data/data_a/test_sent.json'))
+            label = [1] * len(data)
+        elif self.sign == 'train_b':
+            data = json.load(open('data/data_b/train_sent.json'))
+            label = json.load(open('data/data_b/train_label.json'))
+        elif self.sign == 'dev_b':
+            data = json.load(open('data/data_b/valid_sent.json'))
+            label = [1] * len(data)
+        elif self.sign == 'test_b':
+            data = json.load(open('data/data_b/test_sent.json'))
             label = [1] * len(data)
 
         self.data = data

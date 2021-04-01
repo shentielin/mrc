@@ -1,73 +1,79 @@
 import json
 
-train = json.load(open('data/train.json', encoding='utf-8'))
-test = json.load(open('data/validation.json', encoding='utf-8'))
+def generate_data(directory_name):
 
-train_sent = []
-train_label = []
-valid_sent = []
-valid_label = []
-test_sent = []
+    path = 'data/original_data/' + directory_name + '/'
 
-for i in train[:int(0.7*len(train))]:
-    questions = i['Questions']
-    for question in questions:
-        for choice in question['Choices']:
-            temp = [question['Question'], choice[2:]]
-            train_sent.append(temp)
-            train_label.append(0) if choice[0]!=question['Answer'] else train_label.append(1)
+    # train
+    trainpath = path + 'train.txt'
+    train_sentpair, train_label = [], []
+    f = open(trainpath, 'r', encoding='utf-8')
+    for i in f:
+        d = eval(i)
+        source_sentence = d['source'][:min(len(d['source']), 200)]
+        target_sentence = d['target'][:min(len(d['target']), 200)]
+        train_sentpair.append([source_sentence, target_sentence])
+        train_label.append(int(d['label'+directory_name[-1].upper()]))
 
-valid_sign = []
-sign = 0
-for i in train[int(0.7*len(train)):]:
-    questions = i['Questions']
-    for question in questions:
-        for choice in question['Choices']:
-            temp = [question['Question'], choice[2:]]
-            valid_sign.append(sign)
-            valid_sent.append(temp)
-        sign += 1
-        valid_label.append(question['Answer'])
+    # valid
+    validpath = path + 'valid.txt'
+    valid_sentpair, valid_label = [], []
+    f = open(validpath, 'r', encoding='utf-8')
+    for i in f:
+        d = eval(i)
+        source_sentence = d['source'][:min(len(d['source']), 200)]
+        target_sentence = d['target'][:min(len(d['target']), 200)]
+        valid_sentpair.append([source_sentence, target_sentence])
+        valid_label.append(int(d['label'+directory_name[-1].upper()]))
 
-test_sign = []
-sign = 0
-test_qid = []
-for i in test:
-    questions = i['Questions']
-    for question in questions:
-        test_qid.append(question['Q_id'])
-        for choice in question['Choices']:
-            temp = [question['Question'], choice[2:]]
-            test_sign.append(sign)
-            test_sent.append(temp)
-        sign += 1
+    # test
+    testpath = path + 'test_with_id.txt'
+    test_sentpair, test_id = [], []
+    f = open(testpath, 'r', encoding='utf-8')
+    for i in f:
+        d = eval(i)
+        source_sentence = d['source'][:min(len(d['source']), 200)]
+        target_sentence = d['target'][:min(len(d['target']), 200)]
+        test_sentpair.append([source_sentence, target_sentence])
+        test_id.append(d['id'])
 
-print(len(train_sent))
-print(len(train_label))
-print(train_sent[:5])
-print(train_label)
-print(len(valid_sent))
-print(len(valid_label))
-print(valid_sent[:5])
-print(valid_label)
-print(len(test_sent))
-print(test_sent[:5])
-print(len(valid_sign))
-print(valid_sign)
-print(len(test_sign))
-print(test_sign)
-print(len(test_qid))
-print(test_qid)
+    return train_sentpair, train_label, valid_sentpair, valid_label, test_sentpair, test_id
 
 def load_json(file, path):
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(file, f)
 
-# load_json(train_sent, 'train_sent.json')
-# load_json(train_label, 'train_label.json')
-# load_json(valid_sent, 'valid_sent.json')
-# load_json(valid_label, 'data/valid_label.json')
-# load_json(test_sent, 'test_sent.json')
-# load_json(valid_sign, 'data/valid_sign.json')
-# load_json(test_sign, 'data/test_sign.json')
-load_json(test_qid, 'data/test_qid.json')
+
+train_asent, train_alabel, valid_asent, valid_alabel, test_asent, test_aid = [], [], [], [], [], []
+train_bsent, train_blabel, valid_bsent, valid_blabel, test_bsent, test_bid = [], [], [], [], [], []
+for i in ['ll-a', 'sl-a', 'ss-a']:
+    a, b, c, d, e, f = generate_data(i)
+    train_asent += a
+    train_alabel += b
+    valid_asent += c
+    valid_alabel += d
+    test_asent += e
+    test_aid += f
+for i in ['ll-b', 'sl-b', 'ss-b']:
+    a, b, c, d, e, f = generate_data(i)
+    train_bsent += a
+    train_blabel += b
+    valid_bsent += c
+    valid_blabel += d
+    test_bsent += e
+    test_bid += f
+
+
+load_json(train_asent, 'data/data_a/train_sent.json')
+load_json(train_alabel, 'data/data_a/train_label.json')
+load_json(valid_asent, 'data/data_a/valid_sent.json')
+load_json(valid_alabel, 'data/data_a/valid_label.json')
+load_json(test_asent, 'data/data_a/test_sent.json')
+load_json(test_aid, 'data/data_a/test_id.json')
+
+load_json(train_bsent, 'data/data_b/train_sent.json')
+load_json(train_blabel, 'data/data_b/train_label.json')
+load_json(valid_bsent, 'data/data_b/valid_sent.json')
+load_json(valid_blabel, 'data/data_b/valid_label.json')
+load_json(test_bsent, 'data/data_b/test_sent.json')
+load_json(test_bid, 'data/data_b/test_id.json')

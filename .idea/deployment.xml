@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="stl@219.216.65.178:22" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="Copy of project-level server 'stl'" deleteMissingItems="true" autoUploadExternalChanges="true">
     <serverData>
-      <paths name="Copy of project-level server 'whx'">
+      <paths name="Copy of project-level server 'stl'">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/data1/stl/mrc" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>
-      <paths name="stl@219.216.65.178:22">
+      <paths name="stl">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/stl/mrc" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/mrc" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
